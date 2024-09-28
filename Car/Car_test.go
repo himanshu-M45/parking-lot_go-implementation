@@ -12,10 +12,18 @@ func TestCheckCreatedCarShouldMatchItself(t *testing.T) {
 	}
 }
 
-func TestCheckCarColor(t *testing.T) {
-	car := NewCar("RJ-14-HH-6294", RED)
+func TestCheckCarColorIsSame(t *testing.T) {
+	car := NewCar("RJ-14-HH-6294", BLACK)
 
-	if !car.IsSameColor(RED) {
+	if car.IsSameColor(BLACK) == false {
+		t.Errorf("Expected car to be RED")
+	}
+}
+
+func TestCheckCarColorIsNotSame(t *testing.T) {
+	car := NewCar("RJ-14-HH-6294", BLUE)
+
+	if car.IsSameColor(BLACK) == true {
 		t.Errorf("Expected car to be RED")
 	}
 }

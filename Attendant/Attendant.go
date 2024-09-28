@@ -1,12 +1,10 @@
 package Attendant
 
 import (
-	"errors"
+	customError "parking-lot"
+	"parking-lot/Car"
 	"parking-lot/ParkingLot"
-)
-
-var (
-	ErrParkingLotAlreadyAssigned = errors.New("parking lot already assigned")
+	"parking-lot/Ticket"
 )
 
 type Attendant struct {
@@ -14,11 +12,20 @@ type Attendant struct {
 }
 
 func (attendant *Attendant) assign(parkingLot ParkingLot.ParkingLot) error {
-	for i := 0; i < len(attendant.assignedParkingLots); i++ {
-		if attendant.assignedParkingLots[i].IsSameParkingLot(parkingLot) {
-			return ErrParkingLotAlreadyAssigned
+	for _, lot := range attendant.assignedParkingLots {
+		if lot.IsSameParkingLot(parkingLot) {
+			return customError.ErrParkingLotAlreadyAssigned
 		}
 	}
 	attendant.assignedParkingLots = append(attendant.assignedParkingLots, parkingLot)
 	return nil
+}
+
+func (attendant *Attendant) park(car *Car.Car) (Ticket.Ticket, error) {
+	for _, parkingLot := range attendant.assignedParkingLots {
+		if !parkingLot.IsParkingLotFull() {
+			return parkingLot.Park(car)
+		}
+	}
+	return Ticket.Ticket{}, customError.ErrParkingLotFull
 }
