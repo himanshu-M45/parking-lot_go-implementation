@@ -1,14 +1,15 @@
-package main
+package Attendant
 
 import (
 	"errors"
+	"parking-lot/ParkingLot"
 	"testing"
 )
 
 // ------------------------------- assign parkingLot tests -------------------------------
 func TestAssignParkingLotToAttendant(t *testing.T) {
-	parkingLot := ParkingLot{}
-	if err := parkingLot.newParkingLot(1); err != nil { // nil
+	parkingLot := ParkingLot.ParkingLot{}
+	if err := parkingLot.NewParkingLot(1); err != nil { // nil
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
@@ -20,12 +21,12 @@ func TestAssignParkingLotToAttendant(t *testing.T) {
 }
 
 func TestAssignTwoParkingLotToAttendant(t *testing.T) {
-	parkingLot1 := ParkingLot{}
-	if err := parkingLot1.newParkingLot(1); err != nil { // nil
+	parkingLot1 := ParkingLot.ParkingLot{}
+	if err := parkingLot1.NewParkingLot(1); err != nil { // nil
 		t.Fatalf("Expected no error, got %v", err)
 	}
-	parkingLot2 := ParkingLot{}
-	if err := parkingLot2.newParkingLot(1); err != nil { // nil
+	parkingLot2 := ParkingLot.ParkingLot{}
+	if err := parkingLot2.NewParkingLot(1); err != nil { // nil
 		t.Fatalf("Expected no error, got %v", err)
 	}
 	attendant := Attendant{}
@@ -38,8 +39,8 @@ func TestAssignTwoParkingLotToAttendant(t *testing.T) {
 }
 
 func TestCannotAssignSameParkingLotTwice(t *testing.T) {
-	parkingLot := ParkingLot{}
-	if err := parkingLot.newParkingLot(1); err != nil { // nil
+	parkingLot := ParkingLot.ParkingLot{}
+	if err := parkingLot.NewParkingLot(1); err != nil { // nil
 		t.Fatalf("Expected no error, got %v", err)
 	}
 
@@ -55,8 +56,8 @@ func TestCannotAssignSameParkingLotTwice(t *testing.T) {
 }
 
 func TestAssignSameParkingLotToMultipleAttendants(t *testing.T) {
-	parkingLot := ParkingLot{}
-	if err := parkingLot.newParkingLot(1); err != nil { // nil
+	parkingLot := ParkingLot.ParkingLot{}
+	if err := parkingLot.NewParkingLot(1); err != nil { // nil
 		t.Fatalf("Expected no error, got %v", err)
 	}
 

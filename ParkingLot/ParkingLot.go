@@ -1,9 +1,10 @@
-package main
+package ParkingLot
 
 import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"parking-lot/Slot"
 	"time"
 )
 
@@ -15,21 +16,21 @@ var (
 
 type ParkingLot struct {
 	isFull       bool
-	slots        []Slot
+	slots        []Slot.Slot
 	parkingLotId string
 }
 
-func (parkingLot *ParkingLot) newParkingLot(numberOfSlots int) error {
+func (parkingLot *ParkingLot) NewParkingLot(numberOfSlots int) error {
 	if numberOfSlots < 1 {
 		return ErrSlotNumberShouldBeGreaterThanZero
 	}
 	parkingLot.isFull = false
-	parkingLot.slots = make([]Slot, numberOfSlots)
+	parkingLot.slots = make([]Slot.Slot, numberOfSlots)
 	parkingLot.parkingLotId = fmt.Sprintf("%d-%d", time.Now().UnixNano(), rand.Intn(1000))
 	fmt.Println(parkingLot.parkingLotId)
 	return nil
 }
 
-func (parkingLot *ParkingLot) isSameParkingLot(receivedParkingLot ParkingLot) bool {
+func (parkingLot *ParkingLot) IsSameParkingLot(receivedParkingLot ParkingLot) bool {
 	return parkingLot.parkingLotId == receivedParkingLot.parkingLotId
 }

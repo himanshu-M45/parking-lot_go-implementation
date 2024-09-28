@@ -1,7 +1,8 @@
-package main
+package Attendant
 
 import (
 	"errors"
+	"parking-lot/ParkingLot"
 )
 
 var (
@@ -9,12 +10,12 @@ var (
 )
 
 type Attendant struct {
-	assignedParkingLots []ParkingLot
+	assignedParkingLots []ParkingLot.ParkingLot
 }
 
-func (attendant *Attendant) assign(parkingLot ParkingLot) error {
+func (attendant *Attendant) assign(parkingLot ParkingLot.ParkingLot) error {
 	for i := 0; i < len(attendant.assignedParkingLots); i++ {
-		if attendant.assignedParkingLots[i].isSameParkingLot(parkingLot) {
+		if attendant.assignedParkingLots[i].IsSameParkingLot(parkingLot) {
 			return ErrParkingLotAlreadyAssigned
 		}
 	}

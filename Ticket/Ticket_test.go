@@ -1,22 +1,22 @@
-package main
+package Ticket
 
 import (
 	"testing"
 )
 
 func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
-	ticketOne := newTicket()
+	ticketOne := NewTicket()
 
-	if !ticketOne.validateTicket(ticketOne) {
+	if !ticketOne.ValidateTicket(ticketOne) {
 		t.Error("Tickets should not be equal")
 	}
 }
 
 func TestTwoTicketCannotBeSame(t *testing.T) {
-	ticketOne := newTicket()
-	ticketTwo := newTicket()
+	ticketOne := NewTicket()
+	ticketTwo := NewTicket()
 
-	if ticketOne.validateTicket(ticketTwo) {
+	if ticketOne.ValidateTicket(ticketTwo) {
 		t.Error("Tickets should not be equal")
 	}
 }

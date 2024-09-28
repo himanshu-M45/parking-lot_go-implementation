@@ -1,4 +1,4 @@
-package main
+package Car
 
 type CarColor int
 

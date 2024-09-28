@@ -1,4 +1,4 @@
-package main
+package ParkingLot
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 func TestCreateParkingLotWith0Slots(t *testing.T) {
 	parkingLot := ParkingLot{}
 
-	err := parkingLot.newParkingLot(0)
+	err := parkingLot.NewParkingLot(0)
 
 	if !errors.Is(err, ErrSlotNumberShouldBeGreaterThanZero) { // !True
 		t.Errorf("Expected error '%v', got %v", ErrSlotNumberShouldBeGreaterThanZero, err)
@@ -18,7 +18,7 @@ func TestCreateParkingLotWith0Slots(t *testing.T) {
 func TestCreateParkingLotWithNegativeSlots(t *testing.T) {
 	parkingLot := ParkingLot{}
 
-	err := parkingLot.newParkingLot(-12)
+	err := parkingLot.NewParkingLot(-12)
 
 	if !errors.Is(err, ErrSlotNumberShouldBeGreaterThanZero) { // !True
 		t.Errorf("Expected error '%v', got %v", ErrSlotNumberShouldBeGreaterThanZero, err)
@@ -27,26 +27,26 @@ func TestCreateParkingLotWithNegativeSlots(t *testing.T) {
 
 func TestParkingLotIsSame(t *testing.T) {
 	parkingLot := ParkingLot{}
-	if err := parkingLot.newParkingLot(1); err != nil { // nil
+	if err := parkingLot.NewParkingLot(1); err != nil { // nil
 		t.Errorf("Expected no error, got %v", err)
 	}
 
-	if !parkingLot.isSameParkingLot(parkingLot) { // !True
+	if !parkingLot.IsSameParkingLot(parkingLot) { // !True
 		t.Errorf("Expected parking lots to be same")
 	}
 }
 
 func TestParkingLotIsNotSame(t *testing.T) {
 	firstParkingLot := ParkingLot{}
-	if err := firstParkingLot.newParkingLot(1); err != nil { // nil
+	if err := firstParkingLot.NewParkingLot(1); err != nil { // nil
 		t.Errorf("Expected no error, got %v", err)
 	}
 	secondParkingLot := ParkingLot{}
-	if err := secondParkingLot.newParkingLot(1); err != nil { // nil
+	if err := secondParkingLot.NewParkingLot(1); err != nil { // nil
 		t.Errorf("Expected no error, got %v", err)
 	}
 
-	if firstParkingLot.isSameParkingLot(secondParkingLot) { // False
+	if firstParkingLot.IsSameParkingLot(secondParkingLot) { // False
 		t.Errorf("Expected parking lots to be same")
 	}
 }

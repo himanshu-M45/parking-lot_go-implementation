@@ -1,4 +1,4 @@
-package main
+package Ticket
 
 import (
 	"fmt"
@@ -10,12 +10,12 @@ type Ticket struct {
 	ticketId string
 }
 
-func newTicket() Ticket {
+func NewTicket() Ticket {
 	ticketId := fmt.Sprintf("%d-%d", time.Now().UnixNano(), rand.Intn(1000))
 	fmt.Println(ticketId)
 	return Ticket{ticketId: ticketId}
 }
 
-func (ticket Ticket) validateTicket(receivedTicket Ticket) bool {
+func (ticket Ticket) ValidateTicket(receivedTicket Ticket) bool {
 	return ticket.ticketId == receivedTicket.ticketId
 }
