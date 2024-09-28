@@ -1,13 +1,19 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 type Ticket struct {
-	ticketId int64
+	ticketId string
 }
 
 func newTicket() Ticket {
-	return Ticket{ticketId: time.Now().UnixNano()}
+	ticketId := fmt.Sprintf("%d-%d", time.Now().UnixNano(), rand.Intn(1000))
+	fmt.Println(ticketId)
+	return Ticket{ticketId: ticketId}
 }
 
 func (ticket Ticket) validateTicket(receivedTicket Ticket) bool {

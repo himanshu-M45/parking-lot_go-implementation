@@ -2,7 +2,6 @@ package main
 
 import (
 	"testing"
-	"time"
 )
 
 func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
@@ -15,7 +14,6 @@ func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
 
 func TestTwoTicketCannotBeSame(t *testing.T) {
 	ticketOne := newTicket()
-	time.Sleep(1 * time.Nanosecond)
 	ticketTwo := newTicket()
 
 	if ticketOne.validateTicket(ticketTwo) {
