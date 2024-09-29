@@ -34,6 +34,7 @@ func (parkingLot *ParkingLot) IsSameParkingLot(receivedParkingLot ParkingLot) bo
 }
 
 func (parkingLot *ParkingLot) IsParkingLotFull() bool {
+	parkingLot.updateIsFull()
 	return parkingLot.isFull
 }
 

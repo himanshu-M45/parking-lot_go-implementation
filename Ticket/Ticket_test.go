@@ -5,7 +5,7 @@ import (
 )
 
 func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
-	ticketOne := NewTicket()
+	ticketOne := *NewTicket()
 
 	if !ticketOne.ValidateTicket(ticketOne) {
 		t.Error("Tickets should not be equal")
@@ -13,8 +13,8 @@ func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
 }
 
 func TestTwoTicketCannotBeSame(t *testing.T) {
-	ticketOne := NewTicket()
-	ticketTwo := NewTicket()
+	ticketOne := *NewTicket()
+	ticketTwo := *NewTicket()
 
 	if ticketOne.ValidateTicket(ticketTwo) {
 		t.Error("Tickets should not be equal")

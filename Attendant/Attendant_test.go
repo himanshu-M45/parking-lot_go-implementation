@@ -178,3 +178,104 @@ func TestParkCarInSameParkingLotThroughDifferentAttendants(t *testing.T) {
 }
 
 // ------------------------------- unpark through attendant Tests -------------------------------
+func TestUnParkCarThroughAttendant(t *testing.T) {
+	parkingLot, attendant, car := ParkingLot.ParkingLot{}, Attendant{}, &Car.Car{}
+	_, _ = parkingLot.NewParkingLot(1), attendant.assign(parkingLot)
+	car = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+
+	ticket, _ := attendant.park(car)
+	receivedCar, _ := attendant.UnPark(ticket)
+
+	if !receivedCar.IsIdenticalCar("KA-01-HH-1234") {
+		t.Errorf("Expected unpaked car")
+	}
+}
+
+func TestUnParkCarFromMultipleParkingLots(t *testing.T) {
+	parkingLot1, parkingLot2, attendant := ParkingLot.ParkingLot{}, ParkingLot.ParkingLot{}, Attendant{}
+	firstCar, secondCar := &Car.Car{}, &Car.Car{}
+	_, _ = parkingLot1.NewParkingLot(1), parkingLot2.NewParkingLot(1)
+	_, _ = attendant.assign(parkingLot1), attendant.assign(parkingLot2)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+	secondCar = Car.NewCar("KA-01-HH-9999", Car.GREEN)
+
+	firstCarTicket, _ := attendant.park(firstCar)
+	secondCarTicket, _ := attendant.park(secondCar)
+
+	_, _ = attendant.UnPark(firstCarTicket)
+	_, err := attendant.UnPark(secondCarTicket)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}
+
+func TestUnParkAlreadyUnParkedCar(t *testing.T) {
+	parkingLot, attendant, car := ParkingLot.ParkingLot{}, Attendant{}, &Car.Car{}
+	_, _ = parkingLot.NewParkingLot(1), attendant.assign(parkingLot)
+	car = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+
+	ticket, _ := attendant.park(car)
+	_, _ = attendant.UnPark(ticket)
+	_, err := attendant.UnPark(ticket)
+
+	if !errors.Is(err, customError.ErrInvalidTicket) {
+		t.Errorf("Expected error '%v', got %v", customError.ErrInvalidTicket, err)
+	}
+}
+
+func TestUnParkMultipleCarsFromMultipleParkingLotsOfSameAttendant(t *testing.T) {
+	parkingLot1, parkingLot2, attendant := ParkingLot.ParkingLot{}, ParkingLot.ParkingLot{}, Attendant{}
+	firstCar, secondCar := &Car.Car{}, &Car.Car{}
+	_, _ = parkingLot1.NewParkingLot(1), parkingLot2.NewParkingLot(1)
+	_, _ = attendant.assign(parkingLot1), attendant.assign(parkingLot2)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+	secondCar = Car.NewCar("KA-01-HH-9999", Car.GREEN)
+
+	firstCarTicket, _ := attendant.park(firstCar)
+	secondCarTicket, _ := attendant.park(secondCar)
+
+	_, _ = attendant.UnPark(firstCarTicket)
+	_, err := attendant.UnPark(secondCarTicket)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}
+
+func TestUnparkMultipleCarsFromMultipleParkingLotsOfDifferentAttendant(t *testing.T) {
+	parkingLot1, parkingLot2, attendant1, attendant2 := ParkingLot.ParkingLot{}, ParkingLot.ParkingLot{}, Attendant{}, Attendant{}
+	firstCar, secondCar := &Car.Car{}, &Car.Car{}
+	_, _ = parkingLot1.NewParkingLot(1), parkingLot2.NewParkingLot(1)
+	_, _ = attendant1.assign(parkingLot1), attendant2.assign(parkingLot2)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+	secondCar = Car.NewCar("KA-01-HH-9999", Car.GREEN)
+
+	firstCarTicket, _ := attendant1.park(firstCar)
+	secondCarTicket, _ := attendant2.park(secondCar)
+
+	_, _ = attendant1.UnPark(firstCarTicket)
+	_, err := attendant2.UnPark(secondCarTicket)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}
+
+func TestUnparkCarsFromSameParkingLotThroughDifferentAttendants(t *testing.T) {
+	parkingLot, attendant1, attendant2 := ParkingLot.ParkingLot{}, Attendant{}, Attendant{}
+	firstCar, secondCar := &Car.Car{}, &Car.Car{}
+	_, _, _ = parkingLot.NewParkingLot(2), attendant1.assign(parkingLot), attendant2.assign(parkingLot)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.YELLOW)
+	secondCar = Car.NewCar("KA-01-HH-9999", Car.GREEN)
+
+	firstCarTicket, _ := attendant1.park(firstCar)
+	secondCarTicket, _ := attendant1.park(secondCar)
+
+	_, _ = attendant1.UnPark(firstCarTicket)
+	_, err := attendant2.UnPark(secondCarTicket)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}

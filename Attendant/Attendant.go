@@ -29,3 +29,14 @@ func (attendant *Attendant) park(car *Car.Car) (Ticket.Ticket, error) {
 	}
 	return Ticket.Ticket{}, customError.ErrParkingLotFull
 }
+
+func (attendant *Attendant) UnPark(ticket Ticket.Ticket) (Car.Car, error) {
+	for _, parkingLot := range attendant.assignedParkingLots {
+		car, err := parkingLot.UnPark(ticket)
+		if err != nil {
+			continue
+		}
+		return car, nil
+	}
+	return Car.Car{}, customError.ErrInvalidTicket
+}
