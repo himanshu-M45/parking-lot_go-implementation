@@ -42,12 +42,34 @@ func TestParkSameCarTwice(t *testing.T) {
 	slot, car := Slot{}, &Car.Car{}
 	slot.NewSlot()
 	car = Car.NewCar("KA-01-HH-1234", Car.WHITE)
-	
+
 	_, _ = slot.Park(car)
 	if _, err := slot.Park(car); !errors.Is(err, customError.ErrCarAlreadyParked) {
 		t.Errorf("Expected error '%v', got %v", customError.ErrCarAlreadyParked, err)
 	}
 	if !car.IsCarParked() {
 		t.Errorf("Expected car to be parked")
+	}
+}
+
+// ------------------------------- check parked car color Tests -------------------------------
+func TestCheckBlackColorCarIsParkedInSlot(t *testing.T) {
+	slot, car := Slot{}, &Car.Car{}
+	slot.NewSlot()
+	car = Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	_, _ = slot.Park(car)
+	if !slot.IsCarColor(Car.BLACK) {
+		t.Errorf("Expected car color to be black")
+	}
+}
+func TestCheckBlackColorCarIsNotParkedInSlot(t *testing.T) {
+	slot, car := Slot{}, &Car.Car{}
+	slot.NewSlot()
+	car = Car.NewCar("KA-01-HH-1234", Car.RED)
+
+	_, _ = slot.Park(car)
+	if slot.IsCarColor(Car.BLACK) {
+		t.Errorf("Expected car color to be red")
 	}
 }

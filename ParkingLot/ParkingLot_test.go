@@ -28,21 +28,21 @@ func TestCreateParkingLotWithNegativeSlots(t *testing.T) {
 	}
 }
 
-func TestParkingLotIsSame(t *testing.T) {
-	parkingLot := ParkingLot{}
-	_ = parkingLot.NewParkingLot(1)
-
-	if !parkingLot.IsSameParkingLot(parkingLot) { // !True
-		t.Errorf("Expected parking lots to be same")
-	}
-}
-
 func TestNewParkingLotIsEmpty(t *testing.T) {
 	parkingLot := ParkingLot{}
 	_ = parkingLot.NewParkingLot(1)
 
 	if parkingLot.IsParkingLotFull() { // True
 		t.Errorf("Expected parking lot to be empty")
+	}
+}
+
+func TestParkingLotIsSame(t *testing.T) {
+	parkingLot := ParkingLot{}
+	_ = parkingLot.NewParkingLot(1)
+
+	if !parkingLot.IsSameParkingLot(parkingLot) { // !True
+		t.Errorf("Expected parking lots to be same")
 	}
 }
 
@@ -66,7 +66,7 @@ func TestParkCar(t *testing.T) {
 	}
 }
 
-func TestParkingLotWithOneSlotIsFullWhenCarParked(t *testing.T) {
+func TestParkSecondCarInParkingLotWithOneSlot(t *testing.T) {
 	parkingLot, firstCar, secondCar := ParkingLot{}, &Car.Car{}, &Car.Car{}
 	_ = parkingLot.NewParkingLot(1)
 	firstCar = Car.NewCar("KA-01-HH-1234", Car.WHITE)
@@ -99,6 +99,39 @@ func TestParkingLotWithOneSlotsHaveOneCarParkedAndIsFull(t *testing.T) {
 	_, _ = parkingLot.Park(firstCar)
 
 	if !parkingLot.IsParkingLotFull() {
-		t.Errorf("Expected parking lot to not be full")
+		t.Errorf("Expected parking lot to be full")
+	}
+}
+
+// ------------------------------- count cars by color Tests -------------------------------
+func TestGetCountOfBlueColorCars(t *testing.T) {
+	parkingLot, firstCar, secondCar, thirdCar := ParkingLot{}, &Car.Car{}, &Car.Car{}, &Car.Car{}
+	_ = parkingLot.NewParkingLot(3)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.WHITE)
+	secondCar = Car.NewCar("KA-01-HH-1235", Car.BLUE)
+	thirdCar = Car.NewCar("KA-01-HH-1236", Car.BLUE)
+
+	_, _ = parkingLot.Park(firstCar)
+	_, _ = parkingLot.Park(secondCar)
+	_, _ = parkingLot.Park(thirdCar)
+
+	if count := parkingLot.CountCarsByColor(Car.BLUE); count != 2 {
+		t.Errorf("Expected 1, got %d", count)
+	}
+}
+
+func TestGetCountOfBlackColorCars(t *testing.T) {
+	parkingLot, firstCar, secondCar, thirdCar := ParkingLot{}, &Car.Car{}, &Car.Car{}, &Car.Car{}
+	_ = parkingLot.NewParkingLot(3)
+	firstCar = Car.NewCar("KA-01-HH-1234", Car.BLACK)
+	secondCar = Car.NewCar("KA-01-HH-1235", Car.BLACK)
+	thirdCar = Car.NewCar("KA-01-HH-1236", Car.BLACK)
+
+	_, _ = parkingLot.Park(firstCar)
+	_, _ = parkingLot.Park(secondCar)
+	_, _ = parkingLot.Park(thirdCar)
+
+	if count := parkingLot.CountCarsByColor(Car.BLACK); count != 3 {
+		t.Errorf("Expected 1, got %d", count)
 	}
 }

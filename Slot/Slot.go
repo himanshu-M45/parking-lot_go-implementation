@@ -29,3 +29,7 @@ func (slot *Slot) Park(car *Car.Car) (Ticket.Ticket, error) {
 	slot.car.SetCarParked(true)
 	return *slot.ticket, nil
 }
+
+func (slot *Slot) IsCarColor(color Car.CarColor) bool {
+	return slot.car.IsSameColor(color)
+}

@@ -51,6 +51,16 @@ func (parkingLot *ParkingLot) Park(car *Car.Car) (Ticket.Ticket, error) {
 	return Ticket.Ticket{}, customError.ErrParkingLotFull
 }
 
+func (parkingLot *ParkingLot) CountCarsByColor(color Car.CarColor) int {
+	count := 0
+	for _, slot := range parkingLot.slots {
+		if slot.IsSlotOccupied() && slot.IsCarColor(color) {
+			count++
+		}
+	}
+	return count
+}
+
 func (parkingLot *ParkingLot) updateIsFull() {
 	parkingLot.isFull = true
 	for _, slot := range parkingLot.slots {
