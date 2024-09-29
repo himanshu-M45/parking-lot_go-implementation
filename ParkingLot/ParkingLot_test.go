@@ -135,3 +135,27 @@ func TestGetCountOfBlackColorCars(t *testing.T) {
 		t.Errorf("Expected 1, got %d", count)
 	}
 }
+
+// ------------------------------- check car by reg num Tests -------------------------------
+func TestCheckTheGivenCarIsAvailableInParkingLot(t *testing.T) {
+	parkingLot, firstCar := ParkingLot{}, &Car.Car{}
+	_, firstCar = parkingLot.NewParkingLot(1), Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	_, _ = parkingLot.Park(firstCar)
+	ticket, _ := parkingLot.GetCarParkedInfoByRegNo("KA-01-HH-1234")
+
+	if !ticket.ValidateTicket(ticket) {
+		t.Errorf("Expected ticket to match")
+	}
+}
+
+func TestCheckTheGivenCarIsNotAvailableInParkingLot(t *testing.T) {
+	parkingLot := ParkingLot{}
+	_ = parkingLot.NewParkingLot(1)
+
+	_, err := parkingLot.GetCarParkedInfoByRegNo("KA-01-HH-1235")
+
+	if !errors.Is(err, customError.ErrCarNotParked) {
+		t.Errorf("Expected error '%v', got %v", customError.ErrCarNotParked, err)
+	}
+}

@@ -33,3 +33,10 @@ func (slot *Slot) Park(car *Car.Car) (Ticket.Ticket, error) {
 func (slot *Slot) IsCarColor(color Car.CarColor) bool {
 	return slot.car.IsSameColor(color)
 }
+
+func (slot *Slot) GetTicketIfCarMatches(registeredNumber string) (Ticket.Ticket, error) {
+	if slot.car != nil && slot.car.IsIdenticalCar(registeredNumber) {
+		return *slot.ticket, nil
+	}
+	return Ticket.Ticket{}, customError.ErrCarNotParked
+}

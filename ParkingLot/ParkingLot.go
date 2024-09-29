@@ -61,6 +61,19 @@ func (parkingLot *ParkingLot) CountCarsByColor(color Car.CarColor) int {
 	return count
 }
 
+func (parkingLot *ParkingLot) GetCarParkedInfoByRegNo(registeredNumber string) (Ticket.Ticket, error) {
+	for _, slot := range parkingLot.slots {
+		if slot.IsSlotOccupied() {
+			ticket, err := slot.GetTicketIfCarMatches(registeredNumber)
+			if err != nil {
+				continue
+			}
+			return ticket, nil
+		}
+	}
+	return Ticket.Ticket{}, customError.ErrCarNotParked
+}
+
 func (parkingLot *ParkingLot) updateIsFull() {
 	parkingLot.isFull = true
 	for _, slot := range parkingLot.slots {
