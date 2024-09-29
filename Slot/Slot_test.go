@@ -53,8 +53,6 @@ func TestParkSameCarTwice(t *testing.T) {
 	}
 }
 
-// ------------------------------- unpark Tests -------------------------------
-
 // ------------------------------- check parked car color Tests -------------------------------
 func TestCheckBlackColorCarIsParkedInSlot(t *testing.T) {
 	slot, car := Slot{}, &Car.Car{}
@@ -97,6 +95,35 @@ func TestCarNotFoundErrIfCarIsNotAvailable(t *testing.T) {
 	slot.NewSlot()
 
 	_, err := slot.GetTicketIfCarMatches("KA-01-HH-1235")
+
+	if err == nil {
+		t.Errorf("Expected error '%v', got %v", customError.ErrCarNotParked, err)
+	}
+}
+
+// ------------------------------- unpark Tests -------------------------------
+func TestUnparkCar(t *testing.T) {
+	slot, car := Slot{}, &Car.Car{}
+	slot.NewSlot()
+	car = Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	ticket, _ := slot.Park(car)
+	receivedCar, _ := slot.UnPark(ticket)
+
+	if !receivedCar.IsIdenticalCar("KA-01-HH-1234") {
+		t.Errorf("Expected car to be unparked")
+	}
+}
+
+func TestUnparkAlreadyUnParkedCar(t *testing.T) {
+	slot, car := Slot{}, &Car.Car{}
+	slot.NewSlot()
+	car = Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	ticket, _ := slot.Park(car)
+	_, _ = slot.UnPark(ticket)
+
+	_, err := slot.UnPark(ticket)
 
 	if err == nil {
 		t.Errorf("Expected error '%v', got %v", customError.ErrCarNotParked, err)

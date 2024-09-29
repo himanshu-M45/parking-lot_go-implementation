@@ -30,6 +30,17 @@ func (slot *Slot) Park(car *Car.Car) (Ticket.Ticket, error) {
 	return *slot.ticket, nil
 }
 
+func (slot *Slot) UnPark(ticket Ticket.Ticket) (Car.Car, error) {
+	if slot.car == nil || !slot.ticket.ValidateTicket(ticket) {
+		return Car.Car{}, customError.ErrInvalidTicket
+	}
+	car := *slot.car
+	slot.car.SetCarParked(false)
+	slot.car = nil
+	slot.ticket = nil
+	return car, nil
+}
+
 func (slot *Slot) IsCarColor(color Car.CarColor) bool {
 	return slot.car.IsSameColor(color)
 }

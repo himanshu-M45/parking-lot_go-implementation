@@ -56,7 +56,7 @@ func TestParkingLotIsNotSame(t *testing.T) {
 	}
 }
 
-// ------------------------------- park car tests -------------------------------
+// ------------------------------- park tests -------------------------------
 func TestParkCar(t *testing.T) {
 	parkingLot, car := ParkingLot{}, &Car.Car{}
 	_, car = parkingLot.NewParkingLot(1), Car.NewCar("KA-01-HH-1234", Car.BLACK)
@@ -159,3 +159,5 @@ func TestCheckTheGivenCarIsNotAvailableInParkingLot(t *testing.T) {
 		t.Errorf("Expected error '%v', got %v", customError.ErrCarNotParked, err)
 	}
 }
+
+// ------------------------------- unpark tests -------------------------------

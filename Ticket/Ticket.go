@@ -15,6 +15,6 @@ func NewTicket() *Ticket {
 	return &Ticket{ticketId: ticketId}
 }
 
-func (ticket Ticket) ValidateTicket(receivedTicket Ticket) bool {
+func (ticket *Ticket) ValidateTicket(receivedTicket Ticket) bool {
 	return ticket.ticketId == receivedTicket.ticketId
 }
