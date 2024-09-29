@@ -4,6 +4,7 @@ import (
 	"errors"
 	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/Ticket"
 	"testing"
 )
 
@@ -161,3 +162,39 @@ func TestCheckTheGivenCarIsNotAvailableInParkingLot(t *testing.T) {
 }
 
 // ------------------------------- unpark tests -------------------------------
+func TestUnparkCarFromParkingLot(t *testing.T) {
+	parkingLot, car := ParkingLot{}, &Car.Car{}
+	_, car = parkingLot.NewParkingLot(1), Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	ticket, _ := parkingLot.Park(car)
+	_, err := parkingLot.UnPark(ticket)
+
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}
+
+func TestCannotUnparkCarFromParkingLotWithInvalidTicket(t *testing.T) {
+	parkingLot, car := ParkingLot{}, &Car.Car{}
+	_, car = parkingLot.NewParkingLot(1), Car.NewCar("KA-01-HH-1234", Car.BLACK)
+
+	ticket, _ := parkingLot.Park(car)
+	_, _ = parkingLot.UnPark(ticket)
+
+	_, err := parkingLot.UnPark(ticket)
+
+	if err == nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+}
+
+func TestCannotUnparkUnavailableCarFromParkingLot(t *testing.T) {
+	parkingLot, ticket := ParkingLot{}, Ticket.Ticket{}
+	_, ticket = parkingLot.NewParkingLot(1), *Ticket.NewTicket()
+
+	_, err := parkingLot.UnPark(ticket)
+
+	if !errors.Is(err, customError.ErrInvalidTicket) {
+		t.Errorf("Expected error '%v', got %v", customError.ErrInvalidTicket, err)
+	}
+}
