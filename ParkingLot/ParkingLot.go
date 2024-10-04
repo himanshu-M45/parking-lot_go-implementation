@@ -98,3 +98,13 @@ func (parkingLot *ParkingLot) updateIsFull() {
 		}
 	}
 }
+
+func (parkingLot *ParkingLot) GetAvailableSlots() int {
+	count := 0
+	for _, slot := range parkingLot.slots {
+		if !slot.IsSlotOccupied() {
+			count++
+		}
+	}
+	return count
+}
