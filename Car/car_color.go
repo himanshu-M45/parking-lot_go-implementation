@@ -7,6 +7,4 @@ const (
 	BLUE
 	WHITE
 	BLACK
-	YELLOW
-	GREEN
 )

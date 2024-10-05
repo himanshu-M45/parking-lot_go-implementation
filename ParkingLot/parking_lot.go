@@ -2,45 +2,36 @@ package ParkingLot
 
 import (
 	"fmt"
-	"math/rand"
 	customError "parking-lot"
 	"parking-lot/Car"
 	"parking-lot/Slot"
-	"parking-lot/Ticket"
-	"time"
+	"parking-lot/ticket"
 )
 
 type ParkingLot struct {
 	isFull       bool
 	slots        []*Slot.Slot
 	parkingLotId string
+	ownedBy      string
 }
 
-func (parkingLot *ParkingLot) NewParkingLot(numberOfSlots int) error {
+func (parkingLot *ParkingLot) Construct(numberOfSlots int, owner string) error {
 	if numberOfSlots < 1 {
 		return customError.ErrSlotNumberShouldBeGreaterThanZero
 	}
 	parkingLot.isFull = false
+	parkingLot.ownedBy = owner
+	parkingLot.parkingLotId = fmt.Sprintf("%p", parkingLot)
 	parkingLot.slots = make([]*Slot.Slot, numberOfSlots)
 	for i := range parkingLot.slots {
 		parkingLot.slots[i] = &Slot.Slot{}
 	}
-	parkingLot.parkingLotId = fmt.Sprintf("%d-%d", time.Now().UnixNano(), rand.Intn(1000))
 	return nil
 }
 
-func (parkingLot *ParkingLot) IsSameParkingLot(receivedParkingLot ParkingLot) bool {
-	return parkingLot.parkingLotId == receivedParkingLot.parkingLotId
-}
-
-func (parkingLot *ParkingLot) IsParkingLotFull() bool {
-	parkingLot.updateIsFull()
-	return parkingLot.isFull
-}
-
-func (parkingLot *ParkingLot) Park(car *Car.Car) (Ticket.Ticket, error) {
+func (parkingLot *ParkingLot) Park(car *Car.Car) (ticket.Ticket, error) {
 	if car.IsCarParked() {
-		return Ticket.Ticket{}, customError.ErrCarAlreadyParked
+		return ticket.Ticket{}, customError.ErrCarAlreadyParked
 	}
 	for _, slot := range parkingLot.slots {
 		if !slot.IsSlotOccupied() {
@@ -49,10 +40,10 @@ func (parkingLot *ParkingLot) Park(car *Car.Car) (Ticket.Ticket, error) {
 			return ticket, nil
 		}
 	}
-	return Ticket.Ticket{}, customError.ErrParkingLotFull
+	return ticket.Ticket{}, customError.ErrParkingLotFull
 }
 
-func (parkingLot *ParkingLot) UnPark(ticket Ticket.Ticket) (Car.Car, error) {
+func (parkingLot *ParkingLot) UnPark(ticket ticket.Ticket) (Car.Car, error) {
 	for _, slot := range parkingLot.slots {
 		if slot.IsSlotOccupied() {
 			car, err := slot.UnPark(ticket)
@@ -76,7 +67,7 @@ func (parkingLot *ParkingLot) CountCarsByColor(color Car.CarColor) int {
 	return count
 }
 
-func (parkingLot *ParkingLot) GetCarParkedInfoByRegNo(registeredNumber string) (Ticket.Ticket, error) {
+func (parkingLot *ParkingLot) GetCarParkedInfoByRegNo(registeredNumber string) (ticket.Ticket, error) {
 	for _, slot := range parkingLot.slots {
 		if slot.IsSlotOccupied() {
 			ticket, err := slot.GetTicketIfCarMatches(registeredNumber)
@@ -86,7 +77,7 @@ func (parkingLot *ParkingLot) GetCarParkedInfoByRegNo(registeredNumber string) (
 			return ticket, nil
 		}
 	}
-	return Ticket.Ticket{}, customError.ErrCarNotParked
+	return ticket.Ticket{}, customError.ErrCarNotParked
 }
 
 func (parkingLot *ParkingLot) updateIsFull() {
@@ -97,6 +88,19 @@ func (parkingLot *ParkingLot) updateIsFull() {
 			break
 		}
 	}
+}
+
+func (parkingLot *ParkingLot) IsSameParkingLot(receivedParkingLot ParkingLot) bool {
+	return parkingLot.parkingLotId == receivedParkingLot.parkingLotId
+}
+
+func (parkingLot *ParkingLot) IsOwnedBy(id string) bool {
+	return parkingLot.ownedBy == id
+}
+
+func (parkingLot *ParkingLot) IsParkingLotFull() bool {
+	parkingLot.updateIsFull()
+	return parkingLot.isFull
 }
 
 func (parkingLot *ParkingLot) GetAvailableSlots() int {

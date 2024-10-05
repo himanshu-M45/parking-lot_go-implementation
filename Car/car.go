@@ -6,7 +6,7 @@ type Car struct {
 	isParked         bool
 }
 
-func NewCar(registeredNumber string, color CarColor) *Car {
+func Construct(registeredNumber string, color CarColor) *Car {
 	return &Car{registeredNumber: registeredNumber, color: color, isParked: false}
 }
 

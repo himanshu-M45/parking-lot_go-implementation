@@ -5,7 +5,7 @@ import (
 	"parking-lot/Car"
 	"parking-lot/ParkingLot"
 	"parking-lot/Strategy"
-	"parking-lot/Ticket"
+	"parking-lot/ticket"
 )
 
 type Attendant struct {
@@ -13,7 +13,7 @@ type Attendant struct {
 	parkingStrategy     Strategy.ParkingLotStrategy
 }
 
-func (attendant *Attendant) NewAttendant(strategy Strategy.ParkingLotStrategy) {
+func (attendant *Attendant) Construct(strategy Strategy.ParkingLotStrategy) {
 	attendant.assignedParkingLots = make([]ParkingLot.ParkingLot, 0)
 	attendant.parkingStrategy = strategy
 }
@@ -28,16 +28,16 @@ func (attendant *Attendant) assign(parkingLot ParkingLot.ParkingLot) error {
 	return nil
 }
 
-func (attendant *Attendant) park(car *Car.Car) (Ticket.Ticket, error) {
+func (attendant *Attendant) Park(car *Car.Car) (ticket.Ticket, error) {
 	parkingLot, err := attendant.parkingStrategy.GetNextLot(attendant.assignedParkingLots)
 	if err == nil {
 		ticket, err := parkingLot.Park(car)
 		return ticket, err
 	}
-	return Ticket.Ticket{}, customError.ErrParkingLotFull
+	return ticket.Ticket{}, customError.ErrParkingLotFull
 }
 
-func (attendant *Attendant) UnPark(ticket Ticket.Ticket) (Car.Car, error) {
+func (attendant *Attendant) UnPark(ticket ticket.Ticket) (Car.Car, error) {
 	for _, parkingLot := range attendant.assignedParkingLots {
 		car, err := parkingLot.UnPark(ticket)
 		if err != nil {
