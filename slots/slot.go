@@ -1,14 +1,14 @@
-package Slot
+package slots
 
 import (
 	customError "parking-lot"
 	"parking-lot/Car"
-	"parking-lot/ticket"
+	"parking-lot/receipt"
 )
 
 type Slot struct {
 	car    *Car.Car
-	ticket *ticket.Ticket
+	ticket *receipt.Receipt
 }
 
 func (slot *Slot) Construct() {
@@ -20,17 +20,17 @@ func (slot *Slot) IsSlotOccupied() bool {
 	return slot.car != nil
 }
 
-func (slot *Slot) Park(car *Car.Car) (ticket.Ticket, error) {
+func (slot *Slot) Park(car *Car.Car) (receipt.Receipt, error) {
 	if slot.car != nil {
-		return ticket.Ticket{}, customError.ErrCarAlreadyParked
+		return receipt.Receipt{}, customError.ErrCarAlreadyParked
 	}
-	slot.ticket = ticket.Construct()
+	slot.ticket = receipt.Construct()
 	slot.car = car
 	slot.car.SetCarParked(true)
 	return *slot.ticket, nil
 }
 
-func (slot *Slot) UnPark(ticket ticket.Ticket) (Car.Car, error) {
+func (slot *Slot) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 	if slot.car == nil || !slot.ticket.ValidateTicket(ticket) {
 		return Car.Car{}, customError.ErrInvalidTicket
 	}
@@ -45,9 +45,9 @@ func (slot *Slot) IsCarColor(color Car.CarColor) bool {
 	return slot.car.IsSameColor(color)
 }
 
-func (slot *Slot) GetTicketIfCarMatches(registeredNumber string) (ticket.Ticket, error) {
+func (slot *Slot) GetTicketIfCarMatches(registeredNumber string) (receipt.Receipt, error) {
 	if slot.car != nil && slot.car.IsIdenticalCar(registeredNumber) {
 		return *slot.ticket, nil
 	}
-	return ticket.Ticket{}, customError.ErrCarNotParked
+	return receipt.Receipt{}, customError.ErrCarNotParked
 }

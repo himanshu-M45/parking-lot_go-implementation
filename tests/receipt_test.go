@@ -1,12 +1,12 @@
-package test_setup
+package tests
 
 import (
-	"parking-lot/ticket"
+	"parking-lot/receipt"
 	"testing"
 )
 
 func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
-	ticketOne := *ticket.Construct()
+	ticketOne := *receipt.Construct()
 
 	if !ticketOne.ValidateTicket(ticketOne) {
 		t.Error("Tickets should not be equal")
@@ -14,8 +14,8 @@ func TestTicketGenerationAndShouldValidateTrue(t *testing.T) {
 }
 
 func TestTwoTicketCannotBeSame(t *testing.T) {
-	ticketOne := *ticket.Construct()
-	ticketTwo := *ticket.Construct()
+	ticketOne := *receipt.Construct()
+	ticketTwo := *receipt.Construct()
 
 	if ticketOne.ValidateTicket(ticketTwo) {
 		t.Error("Tickets should not be equal")

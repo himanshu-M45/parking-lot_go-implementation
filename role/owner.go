@@ -1,35 +1,35 @@
-package Attendant
+package role
 
 import (
 	"fmt"
 	customError "parking-lot"
-	"parking-lot/ParkingLot"
+	"parking-lot/parking_lot"
 	"sync"
 )
 
 type Owner struct {
 	ownerId          string
-	ownedParkingLots []ParkingLot.ParkingLot
+	ownedParkingLots []parking_lot.ParkingLot
 	parkingLotStatus sync.Map
 	Attendant
 }
 
 func (owner *Owner) Construct() {
 	owner.ownerId = fmt.Sprintf("%p", owner)
-	owner.ownedParkingLots = make([]ParkingLot.ParkingLot, 0)
+	owner.ownedParkingLots = make([]parking_lot.ParkingLot, 0)
 }
 
-func (owner *Owner) CreateParkingLot(numberOfSlots int) (ParkingLot.ParkingLot, error) {
-	parkingLot := ParkingLot.ParkingLot{}
+func (owner *Owner) CreateParkingLot(numberOfSlots int) (parking_lot.ParkingLot, error) {
+	parkingLot := parking_lot.ParkingLot{}
 	err := parkingLot.Construct(numberOfSlots, owner.ownerId)
 	if err == nil {
 		owner.ownedParkingLots = append(owner.ownedParkingLots, parkingLot)
 		return parkingLot, nil
 	}
-	return ParkingLot.ParkingLot{}, err
+	return parking_lot.ParkingLot{}, err
 }
 
-func (owner *Owner) Assign(parkingLot ParkingLot.ParkingLot, attendant *Attendant) error {
+func (owner *Owner) Assign(parkingLot parking_lot.ParkingLot, attendant *Attendant) error {
 	if owner.verifyParkingLot(parkingLot) {
 		err := attendant.assign(parkingLot)
 		if err == nil {
@@ -41,7 +41,7 @@ func (owner *Owner) Assign(parkingLot ParkingLot.ParkingLot, attendant *Attendan
 	return customError.ErrOwnerDoesNotOwnParkingLot
 }
 
-func (owner *Owner) verifyParkingLot(parkingLot ParkingLot.ParkingLot) bool {
+func (owner *Owner) verifyParkingLot(parkingLot parking_lot.ParkingLot) bool {
 	for _, lot := range owner.ownedParkingLots {
 		if lot.IsSameParkingLot(parkingLot) && lot.IsOwnedBy(owner.ownerId) {
 			return true

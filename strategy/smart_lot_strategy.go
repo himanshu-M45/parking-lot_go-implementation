@@ -1,14 +1,14 @@
-package Strategy
+package strategy
 
 import (
 	customError "parking-lot"
-	"parking-lot/ParkingLot"
+	"parking-lot/parking_lot"
 )
 
 type SmartLotStrategy struct{}
 
-func (s *SmartLotStrategy) GetNextLot(parkingLots []ParkingLot.ParkingLot) (ParkingLot.ParkingLot, error) {
-	bestParkingLot := ParkingLot.ParkingLot{}
+func (s *SmartLotStrategy) GetNextLot(parkingLots []parking_lot.ParkingLot) (parking_lot.ParkingLot, error) {
+	bestParkingLot := parking_lot.ParkingLot{}
 	maxAvailableSlots := 0
 	for _, parkingLot := range parkingLots {
 		availableSlots := parkingLot.GetAvailableSlots()
@@ -20,5 +20,5 @@ func (s *SmartLotStrategy) GetNextLot(parkingLots []ParkingLot.ParkingLot) (Park
 	if maxAvailableSlots > 0 && !bestParkingLot.IsParkingLotFull() {
 		return bestParkingLot, nil
 	}
-	return ParkingLot.ParkingLot{}, customError.ErrParkingLotFull
+	return parking_lot.ParkingLot{}, customError.ErrParkingLotFull
 }

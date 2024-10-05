@@ -1,10 +1,10 @@
-package test_setup
+package tests
 
 import (
 	"github.com/stretchr/testify/assert"
 	customError "parking-lot"
 	"parking-lot/Car"
-	"parking-lot/ticket"
+	"parking-lot/receipt"
 	"testing"
 )
 
@@ -69,7 +69,7 @@ func TestParkingLotWithOneSlotsHaveOneCarParkedAndIsFull(t *testing.T) {
 	assert.True(t, parkingLot.IsParkingLotFull())
 }
 
-// ------------------------------- count cars by color tests -------------------------------
+// ------------------------------- count Car by color tests -------------------------------
 func TestGetCountOfWhiteColorCars(t *testing.T) {
 	Setup()
 	_, _ = parkingLot4.Park(car)
@@ -88,7 +88,7 @@ func TestGetCountOfBlackColorCars(t *testing.T) {
 	assert.Equal(t, 2, parkingLot4.CountCarsByColor(Car.BLACK))
 }
 
-// ------------------------------- check car by reg num tests -------------------------------
+// ------------------------------- check Car by reg num tests -------------------------------
 func TestCheckTheGivenCarIsAvailableInParkingLot(t *testing.T) {
 	Setup()
 	_, _ = parkingLot.Park(car)
@@ -124,8 +124,8 @@ func TestCannotUnparkCarFromParkingLotWithInvalidTicket(t *testing.T) {
 
 func TestCannotUnparkUnavailableCarFromParkingLot(t *testing.T) {
 	Setup()
-	dummyTicket := ticket.Ticket{}
-	dummyTicket = *ticket.Construct()
+	dummyTicket := receipt.Receipt{}
+	dummyTicket = *receipt.Construct()
 
 	_, err := parkingLot.UnPark(dummyTicket)
 

@@ -1,4 +1,4 @@
-package test_setup
+package tests
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -40,7 +40,7 @@ func TestCannotParkSameCarTwice(t *testing.T) {
 	assert.True(t, car.IsCarParked())
 }
 
-// ------------------------------- check parked car color tests -------------------------------
+// ------------------------------- check parked Car color tests -------------------------------
 func TestCheckBlackColorCarIsParkedInSlot(t *testing.T) {
 	Setup()
 	_, _ = slot.Park(car)
@@ -53,7 +53,7 @@ func TestCheckBlackColorCarIsNotParkedInSlot(t *testing.T) {
 	assert.False(t, slot.IsCarColor(Car.BLACK))
 }
 
-// ------------------------------- check car by reg num tests -------------------------------
+// ------------------------------- check Car by reg num tests -------------------------------
 func TestGetTicketIfCarMatches(t *testing.T) {
 	Setup()
 
@@ -79,7 +79,7 @@ func TestUnparkCarFromSlot(t *testing.T) {
 	receivedCar, _ := slot.UnPark(ticket)
 
 	if !receivedCar.IsIdenticalCar("KA-01-HH-1234") {
-		t.Errorf("Expected car to be unparked")
+		t.Errorf("Expected Car to be unparked")
 	}
 	assert.True(t, receivedCar.IsIdenticalCar("KA-01-HH-1234"))
 }

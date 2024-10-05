@@ -1,24 +1,24 @@
-package Attendant
+package role
 
 import (
 	customError "parking-lot"
 	"parking-lot/Car"
-	"parking-lot/ParkingLot"
-	"parking-lot/Strategy"
-	"parking-lot/ticket"
+	"parking-lot/parking_lot"
+	"parking-lot/receipt"
+	"parking-lot/strategy"
 )
 
 type Attendant struct {
-	assignedParkingLots []ParkingLot.ParkingLot
-	parkingStrategy     Strategy.ParkingLotStrategy
+	assignedParkingLots []parking_lot.ParkingLot
+	parkingStrategy     strategy.ParkingLotStrategy
 }
 
-func (attendant *Attendant) Construct(strategy Strategy.ParkingLotStrategy) {
-	attendant.assignedParkingLots = make([]ParkingLot.ParkingLot, 0)
+func (attendant *Attendant) Construct(strategy strategy.ParkingLotStrategy) {
+	attendant.assignedParkingLots = make([]parking_lot.ParkingLot, 0)
 	attendant.parkingStrategy = strategy
 }
 
-func (attendant *Attendant) assign(parkingLot ParkingLot.ParkingLot) error {
+func (attendant *Attendant) assign(parkingLot parking_lot.ParkingLot) error {
 	for _, lot := range attendant.assignedParkingLots {
 		if lot.IsSameParkingLot(parkingLot) {
 			return customError.ErrParkingLotAlreadyAssigned
@@ -28,16 +28,16 @@ func (attendant *Attendant) assign(parkingLot ParkingLot.ParkingLot) error {
 	return nil
 }
 
-func (attendant *Attendant) Park(car *Car.Car) (ticket.Ticket, error) {
+func (attendant *Attendant) Park(car *Car.Car) (receipt.Receipt, error) {
 	parkingLot, err := attendant.parkingStrategy.GetNextLot(attendant.assignedParkingLots)
 	if err == nil {
 		ticket, err := parkingLot.Park(car)
 		return ticket, err
 	}
-	return ticket.Ticket{}, customError.ErrParkingLotFull
+	return receipt.Receipt{}, customError.ErrParkingLotFull
 }
 
-func (attendant *Attendant) UnPark(ticket ticket.Ticket) (Car.Car, error) {
+func (attendant *Attendant) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 	for _, parkingLot := range attendant.assignedParkingLots {
 		car, err := parkingLot.UnPark(ticket)
 		if err != nil {

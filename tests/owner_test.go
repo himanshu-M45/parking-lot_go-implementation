@@ -1,4 +1,4 @@
-package test_setup
+package tests
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -22,7 +22,7 @@ func TestCreateMultipleParkingLotsToOwner(t *testing.T) {
 	assert.NotNil(t, parkingLot2)
 }
 
-// ---------------------------- Attendant tests ----------------------------
+// ---------------------------- role tests ----------------------------
 func TestAssignOwnedParkingLotToAttendant(t *testing.T) {
 	Setup()
 	assert.NoError(t, owner.Assign(parkingLot, &attendant))
