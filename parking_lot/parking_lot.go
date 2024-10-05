@@ -2,8 +2,8 @@ package parking_lot
 
 import (
 	"fmt"
-	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/common/custom_errors"
 	"parking-lot/receipt"
 	"parking-lot/slots"
 )
@@ -17,7 +17,7 @@ type ParkingLot struct {
 
 func (parkingLot *ParkingLot) Construct(numberOfSlots int, owner string) error {
 	if numberOfSlots < 1 {
-		return customError.ErrSlotNumberShouldBeGreaterThanZero
+		return custom_errors.ErrSlotNumberShouldBeGreaterThanZero
 	}
 	parkingLot.isFull = false
 	parkingLot.ownedBy = owner
@@ -31,7 +31,7 @@ func (parkingLot *ParkingLot) Construct(numberOfSlots int, owner string) error {
 
 func (parkingLot *ParkingLot) Park(car *Car.Car) (receipt.Receipt, error) {
 	if car.IsCarParked() {
-		return receipt.Receipt{}, customError.ErrCarAlreadyParked
+		return receipt.Receipt{}, custom_errors.ErrCarAlreadyParked
 	}
 	for _, slot := range parkingLot.slots {
 		if !slot.IsSlotOccupied() {
@@ -40,7 +40,7 @@ func (parkingLot *ParkingLot) Park(car *Car.Car) (receipt.Receipt, error) {
 			return ticket, nil
 		}
 	}
-	return receipt.Receipt{}, customError.ErrParkingLotFull
+	return receipt.Receipt{}, custom_errors.ErrParkingLotFull
 }
 
 func (parkingLot *ParkingLot) UnPark(ticket receipt.Receipt) (Car.Car, error) {
@@ -54,7 +54,7 @@ func (parkingLot *ParkingLot) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 			return car, err
 		}
 	}
-	return Car.Car{}, customError.ErrInvalidTicket
+	return Car.Car{}, custom_errors.ErrInvalidTicket
 }
 
 func (parkingLot *ParkingLot) CountCarsByColor(color Car.CarColor) int {
@@ -77,7 +77,7 @@ func (parkingLot *ParkingLot) GetCarParkedInfoByRegNo(registeredNumber string) (
 			return ticket, nil
 		}
 	}
-	return receipt.Receipt{}, customError.ErrCarNotParked
+	return receipt.Receipt{}, custom_errors.ErrCarNotParked
 }
 
 func (parkingLot *ParkingLot) updateIsFull() {

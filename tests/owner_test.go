@@ -2,7 +2,7 @@ package tests
 
 import (
 	"github.com/stretchr/testify/assert"
-	customError "parking-lot"
+	"parking-lot/common/custom_errors"
 	"testing"
 )
 
@@ -31,7 +31,7 @@ func TestAssignOwnedParkingLotToAttendant(t *testing.T) {
 func TestAssignToNotOwnedParkingLot(t *testing.T) {
 	Setup()
 	err := owner.Assign(parkingLot3, &attendant)
-	assert.Equal(t, customError.ErrOwnerDoesNotOwnParkingLot, err)
+	assert.Equal(t, custom_errors.ErrOwnerDoesNotOwnParkingLot, err)
 }
 
 func TestAssignMultipleAttendantsToSameParkingLot(t *testing.T) {
@@ -50,5 +50,5 @@ func TestAssignAlreadyAssignedSmartAttendant(t *testing.T) {
 	Setup()
 	_ = owner.Assign(parkingLot, &smartAttendant)
 	err := owner.Assign(parkingLot, &smartAttendant)
-	assert.Equal(t, customError.ErrParkingLotAlreadyAssigned, err)
+	assert.Equal(t, custom_errors.ErrParkingLotAlreadyAssigned, err)
 }

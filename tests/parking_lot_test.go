@@ -2,8 +2,8 @@ package tests
 
 import (
 	"github.com/stretchr/testify/assert"
-	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/common/custom_errors"
 	"parking-lot/receipt"
 	"testing"
 )
@@ -12,13 +12,13 @@ import (
 func TestCreateParkingLotWith0Slots(t *testing.T) {
 	Setup()
 	_, err := owner.CreateParkingLot(0)
-	assert.Equal(t, customError.ErrSlotNumberShouldBeGreaterThanZero, err)
+	assert.Equal(t, custom_errors.ErrSlotNumberShouldBeGreaterThanZero, err)
 }
 
 func TestCreateParkingLotWithNegativeSlots(t *testing.T) {
 	Setup()
 	_, err := owner.CreateParkingLot(-3)
-	assert.Equal(t, customError.ErrSlotNumberShouldBeGreaterThanZero, err)
+	assert.Equal(t, custom_errors.ErrSlotNumberShouldBeGreaterThanZero, err)
 }
 
 func TestNewParkingLotIsEmpty(t *testing.T) {
@@ -49,7 +49,7 @@ func TestParkSecondCarInParkingLotWithOneSlot(t *testing.T) {
 	_, _ = parkingLot.Park(car)
 	_, err := parkingLot.Park(car1)
 
-	assert.Equal(t, customError.ErrParkingLotFull, err)
+	assert.Equal(t, custom_errors.ErrParkingLotFull, err)
 }
 
 func TestParkingLotWithTwoSlotsHaveOneCarParkedAndIsNotFull(t *testing.T) {
@@ -101,7 +101,7 @@ func TestCheckTheGivenCarIsNotAvailableInParkingLot(t *testing.T) {
 	Setup()
 	_, err := parkingLot.GetCarParkedInfoByRegNo("KA-01-HH-1235")
 
-	assert.Equal(t, customError.ErrCarNotParked, err)
+	assert.Equal(t, custom_errors.ErrCarNotParked, err)
 }
 
 // ------------------------------- unpark tests -------------------------------
@@ -119,7 +119,7 @@ func TestCannotUnparkCarFromParkingLotWithInvalidTicket(t *testing.T) {
 	_, _ = parkingLot.UnPark(receivedTicket)
 	_, err := parkingLot.UnPark(receivedTicket)
 
-	assert.Equal(t, customError.ErrInvalidTicket, err)
+	assert.Equal(t, custom_errors.ErrInvalidTicket, err)
 }
 
 func TestCannotUnparkUnavailableCarFromParkingLot(t *testing.T) {
@@ -129,5 +129,5 @@ func TestCannotUnparkUnavailableCarFromParkingLot(t *testing.T) {
 
 	_, err := parkingLot.UnPark(dummyTicket)
 
-	assert.Equal(t, customError.ErrInvalidTicket, err)
+	assert.Equal(t, custom_errors.ErrInvalidTicket, err)
 }

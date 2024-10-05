@@ -2,7 +2,7 @@ package role
 
 import (
 	"fmt"
-	customError "parking-lot"
+	"parking-lot/common/custom_errors"
 	"parking-lot/parking_lot"
 	"sync"
 )
@@ -38,7 +38,7 @@ func (owner *Owner) Assign(parkingLot parking_lot.ParkingLot, attendant *Attenda
 		return err
 	}
 
-	return customError.ErrOwnerDoesNotOwnParkingLot
+	return custom_errors.ErrOwnerDoesNotOwnParkingLot
 }
 
 func (owner *Owner) verifyParkingLot(parkingLot parking_lot.ParkingLot) bool {

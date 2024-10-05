@@ -2,8 +2,8 @@ package tests
 
 import (
 	"github.com/stretchr/testify/assert"
-	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/common/custom_errors"
 	"testing"
 )
 
@@ -27,7 +27,7 @@ func TestParkCarAlreadyParkedCar(t *testing.T) {
 	_, _ = slot.Park(car)
 	_, err := slot.Park(car)
 
-	assert.Equal(t, customError.ErrCarAlreadyParked, err)
+	assert.Equal(t, custom_errors.ErrCarAlreadyParked, err)
 }
 
 func TestCannotParkSameCarTwice(t *testing.T) {
@@ -36,7 +36,7 @@ func TestCannotParkSameCarTwice(t *testing.T) {
 	_, _ = slot.Park(car)
 	_, err := slot.Park(car)
 
-	assert.Equal(t, customError.ErrCarAlreadyParked, err)
+	assert.Equal(t, custom_errors.ErrCarAlreadyParked, err)
 	assert.True(t, car.IsCarParked())
 }
 
@@ -68,7 +68,7 @@ func TestCarNotFoundErrIfCarIsNotAvailable(t *testing.T) {
 
 	_, err := slot.GetTicketIfCarMatches("KA-01-HH-1235")
 
-	assert.Equal(t, customError.ErrCarNotParked, err)
+	assert.Equal(t, custom_errors.ErrCarNotParked, err)
 }
 
 // ------------------------------- unpark tests -------------------------------
@@ -92,5 +92,5 @@ func TestUnparkAlreadyUnParkedCar(t *testing.T) {
 
 	_, err := slot.UnPark(ticket)
 
-	assert.Equal(t, customError.ErrInvalidTicket, err)
+	assert.Equal(t, custom_errors.ErrInvalidTicket, err)
 }

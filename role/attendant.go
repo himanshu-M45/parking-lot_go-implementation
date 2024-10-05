@@ -1,8 +1,8 @@
 package role
 
 import (
-	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/common/custom_errors"
 	"parking-lot/parking_lot"
 	"parking-lot/receipt"
 	"parking-lot/strategy"
@@ -21,7 +21,7 @@ func (attendant *Attendant) Construct(strategy strategy.ParkingLotStrategy) {
 func (attendant *Attendant) assign(parkingLot parking_lot.ParkingLot) error {
 	for _, lot := range attendant.assignedParkingLots {
 		if lot.IsSameParkingLot(parkingLot) {
-			return customError.ErrParkingLotAlreadyAssigned
+			return custom_errors.ErrParkingLotAlreadyAssigned
 		}
 	}
 	attendant.assignedParkingLots = append(attendant.assignedParkingLots, parkingLot)
@@ -34,7 +34,7 @@ func (attendant *Attendant) Park(car *Car.Car) (receipt.Receipt, error) {
 		ticket, err := parkingLot.Park(car)
 		return ticket, err
 	}
-	return receipt.Receipt{}, customError.ErrParkingLotFull
+	return receipt.Receipt{}, custom_errors.ErrParkingLotFull
 }
 
 func (attendant *Attendant) UnPark(ticket receipt.Receipt) (Car.Car, error) {
@@ -45,5 +45,5 @@ func (attendant *Attendant) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 		}
 		return car, nil
 	}
-	return Car.Car{}, customError.ErrInvalidTicket
+	return Car.Car{}, custom_errors.ErrInvalidTicket
 }

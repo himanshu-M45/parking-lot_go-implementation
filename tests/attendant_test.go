@@ -2,7 +2,7 @@ package tests
 
 import (
 	"github.com/stretchr/testify/assert"
-	customError "parking-lot"
+	"parking-lot/common/custom_errors"
 	"testing"
 )
 
@@ -22,7 +22,7 @@ func TestCannotAssignSameParkingLotTwice(t *testing.T) {
 	Setup()
 	_ = owner.Assign(parkingLot, &attendant)
 	err := owner.Assign(parkingLot, &attendant)
-	assert.Equal(t, customError.ErrParkingLotAlreadyAssigned, err)
+	assert.Equal(t, custom_errors.ErrParkingLotAlreadyAssigned, err)
 }
 
 func TestAssignSameParkingLotToMultipleAttendants(t *testing.T) {
@@ -55,7 +55,7 @@ func TestTryToParkCarWhenParkingLotIsFull(t *testing.T) {
 	_, _ = attendant.Park(car1)
 	_, err := attendant.Park(car2)
 
-	assert.Equal(t, customError.ErrParkingLotFull, err)
+	assert.Equal(t, custom_errors.ErrParkingLotFull, err)
 }
 
 func TestParkSameCarTwiceExpectError(t *testing.T) {
@@ -65,7 +65,7 @@ func TestParkSameCarTwiceExpectError(t *testing.T) {
 	_, _ = attendant.Park(car)
 	_, err := attendant.Park(car)
 
-	assert.Equal(t, customError.ErrCarAlreadyParked, err)
+	assert.Equal(t, custom_errors.ErrCarAlreadyParked, err)
 }
 
 func TestParkMultipleCarsInParkingLotThroughAttendant(t *testing.T) {
@@ -97,7 +97,7 @@ func TestParkSameCarInDifferentParkingLotsOfSameAttendant(t *testing.T) {
 	_, _ = attendant.Park(car)
 	_, err := attendant.Park(car)
 
-	assert.Equal(t, customError.ErrCarAlreadyParked, err)
+	assert.Equal(t, custom_errors.ErrCarAlreadyParked, err)
 }
 
 func TestParkCarInDifferentParkingLotThroughDifferentAttendants(t *testing.T) {
@@ -154,7 +154,7 @@ func TestUnParkAlreadyUnParkedCar(t *testing.T) {
 	_, _ = attendant.UnPark(ticket)
 	_, err := attendant.UnPark(ticket)
 
-	assert.Equal(t, customError.ErrInvalidTicket, err)
+	assert.Equal(t, custom_errors.ErrInvalidTicket, err)
 }
 
 func TestUnParkMultipleCarsFromMultipleParkingLotsOfSameAttendant(t *testing.T) {
@@ -226,7 +226,7 @@ func TestDistributedParkingWhenAllParkingLotsAreFull(t *testing.T) {
 	_, _ = smartAttendant.Park(car2) // parkingLot3
 	_, err := smartAttendant.Park(car3)
 
-	assert.Equal(t, customError.ErrParkingLotFull, err)
+	assert.Equal(t, custom_errors.ErrParkingLotFull, err)
 }
 
 func TestDistributedParkingWhenAllParkingLotsAreFullAndUnparkCarAndParkAgainInSameParkingLot(t *testing.T) {
@@ -240,7 +240,7 @@ func TestDistributedParkingWhenAllParkingLotsAreFullAndUnparkCarAndParkAgainInSa
 	_, _ = smartAttendant.Park(car2)       // parkingLot3
 	_, err := smartAttendant.Park(car3)
 
-	assert.Equal(t, customError.ErrParkingLotFull, err)
+	assert.Equal(t, custom_errors.ErrParkingLotFull, err)
 
 	_, _ = smartAttendant.UnPark(ticket)
 	_, err = smartAttendant.Park(car3)

@@ -1,7 +1,7 @@
 package strategy
 
 import (
-	customError "parking-lot"
+	"parking-lot/common/custom_errors"
 	"parking-lot/parking_lot"
 )
 
@@ -13,5 +13,5 @@ func (b *BasicLotStrategy) GetNextLot(parkingLots []parking_lot.ParkingLot) (par
 			return parkingLot, nil
 		}
 	}
-	return parking_lot.ParkingLot{}, customError.ErrParkingLotFull
+	return parking_lot.ParkingLot{}, custom_errors.ErrParkingLotFull
 }

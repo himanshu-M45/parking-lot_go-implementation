@@ -1,8 +1,8 @@
 package slots
 
 import (
-	customError "parking-lot"
 	"parking-lot/Car"
+	"parking-lot/common/custom_errors"
 	"parking-lot/receipt"
 )
 
@@ -22,7 +22,7 @@ func (slot *Slot) IsSlotOccupied() bool {
 
 func (slot *Slot) Park(car *Car.Car) (receipt.Receipt, error) {
 	if slot.car != nil {
-		return receipt.Receipt{}, customError.ErrCarAlreadyParked
+		return receipt.Receipt{}, custom_errors.ErrCarAlreadyParked
 	}
 	slot.ticket = receipt.Construct()
 	slot.car = car
@@ -32,7 +32,7 @@ func (slot *Slot) Park(car *Car.Car) (receipt.Receipt, error) {
 
 func (slot *Slot) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 	if slot.car == nil || !slot.ticket.ValidateTicket(ticket) {
-		return Car.Car{}, customError.ErrInvalidTicket
+		return Car.Car{}, custom_errors.ErrInvalidTicket
 	}
 	car := *slot.car
 	slot.car.SetCarParked(false)
@@ -49,5 +49,5 @@ func (slot *Slot) GetTicketIfCarMatches(registeredNumber string) (receipt.Receip
 	if slot.car != nil && slot.car.IsIdenticalCar(registeredNumber) {
 		return *slot.ticket, nil
 	}
-	return receipt.Receipt{}, customError.ErrCarNotParked
+	return receipt.Receipt{}, custom_errors.ErrCarNotParked
 }

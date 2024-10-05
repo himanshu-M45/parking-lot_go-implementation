@@ -1,7 +1,7 @@
 package strategy
 
 import (
-	customError "parking-lot"
+	"parking-lot/common/custom_errors"
 	"parking-lot/parking_lot"
 )
 
@@ -20,5 +20,5 @@ func (s *SmartLotStrategy) GetNextLot(parkingLots []parking_lot.ParkingLot) (par
 	if maxAvailableSlots > 0 && !bestParkingLot.IsParkingLotFull() {
 		return bestParkingLot, nil
 	}
-	return parking_lot.ParkingLot{}, customError.ErrParkingLotFull
+	return parking_lot.ParkingLot{}, custom_errors.ErrParkingLotFull
 }
