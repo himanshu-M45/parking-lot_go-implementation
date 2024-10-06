@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"parking-lot/common/custom_errors"
 	"parking-lot/parking_lot"
+	"parking-lot/strategy"
 	"sync"
 )
 
@@ -11,12 +12,14 @@ type Owner struct {
 	ownerId          string
 	ownedParkingLots []parking_lot.ParkingLot
 	parkingLotStatus sync.Map
-	Attendant
+	*Attendant
 }
 
 func (owner *Owner) Construct() {
 	owner.ownerId = fmt.Sprintf("%p", owner)
 	owner.ownedParkingLots = make([]parking_lot.ParkingLot, 0)
+	owner.Attendant = &Attendant{}
+	owner.Attendant.Construct(&strategy.SmartLotStrategy{})
 }
 
 func (owner *Owner) CreateParkingLot(numberOfSlots int) (parking_lot.ParkingLot, error) {

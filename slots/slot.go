@@ -34,8 +34,8 @@ func (slot *Slot) UnPark(ticket receipt.Receipt) (Car.Car, error) {
 	if slot.car == nil || !slot.ticket.ValidateTicket(ticket) {
 		return Car.Car{}, custom_errors.ErrInvalidTicket
 	}
-	car := *slot.car
 	slot.car.SetCarParked(false)
+	car := *slot.car
 	slot.car = nil
 	slot.ticket = nil
 	return car, nil
