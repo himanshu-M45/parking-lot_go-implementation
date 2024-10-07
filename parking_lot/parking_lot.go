@@ -19,6 +19,9 @@ func (parkingLot *ParkingLot) Construct(numberOfSlots int, owner string) error {
 	if numberOfSlots < 1 {
 		return custom_errors.ErrSlotNumberShouldBeGreaterThanZero
 	}
+	if owner == "" {
+		return custom_errors.ErrCannotCreateParkingLotWithoutOwner
+	}
 	parkingLot.isFull = false
 	parkingLot.ownedBy = owner
 	parkingLot.parkingLotId = fmt.Sprintf("%p", parkingLot)

@@ -4,6 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"parking-lot/Car"
 	"parking-lot/common/custom_errors"
+	"parking-lot/parking_lot"
 	"parking-lot/receipt"
 	"testing"
 )
@@ -13,6 +14,12 @@ func TestCreateParkingLotWith0Slots(t *testing.T) {
 	Setup()
 	_, err := owner.CreateParkingLot(0)
 	assert.Equal(t, custom_errors.ErrSlotNumberShouldBeGreaterThanZero, err)
+}
+
+func TestCreateParkingLotWithoutOwner(t *testing.T) {
+	anotherParkingLot := parking_lot.ParkingLot{}
+	err := anotherParkingLot.Construct(1, "")
+	assert.Equal(t, custom_errors.ErrCannotCreateParkingLotWithoutOwner, err)
 }
 
 func TestCreateParkingLotWithNegativeSlots(t *testing.T) {
